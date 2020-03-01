@@ -1,7 +1,6 @@
 import path from "path";
 import { Stack } from "@aws-cdk/core";
-import NextDistribution from "../src/constructs/NextjsCloudfront";
-
+import NextjsCloudfront from "../src/constructs/NextjsCloudfront";
 import "@aws-cdk/assert/jest";
 
 describe("Given I want to provision a serverless next app with zero config", () => {
@@ -12,7 +11,7 @@ describe("Given I want to provision a serverless next app with zero config", () 
     tmpDir = process.cwd();
     process.chdir(path.join(__dirname, "./fixtures/zero-config-app"));
     stack = new Stack();
-    const distribution = new NextDistribution(stack, "testdistribution");
+    const distribution = new NextjsCloudfront(stack, "testdistribution");
   });
 
   afterEach(() => {

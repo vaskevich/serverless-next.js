@@ -6,11 +6,18 @@ import {
   LambdaEdgeEventType
 } from "@aws-cdk/aws-cloudfront";
 import { Bucket } from "@aws-cdk/aws-s3";
+import { BucketDeployment, Source } from "@aws-cdk/aws-s3-deployment";
 
-export default class CloudFrontNextjsDistribution extends Construct {
+export default class NextjsCloudfront extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
-    const sourceBucket = new Bucket(scope, `${id}-static-assets-bucket`);
+    const assetsBucket = new Bucket(scope, `${id}-static-assets-bucket`);
+
+    const bucketDeployment = new BucketDeployment(this, "DeployWebsite", {
+      sources: [Source.asset("./.next")],
+      destinationBucket: assetsBucket,
+      destinationKeyPrefix: "static"
+    });
 
     const coreEdgeFn = new Function(scope, `${id}-core-edge-fn`, {
       runtime: Runtime.NODEJS_10_X,
@@ -25,7 +32,7 @@ export default class CloudFrontNextjsDistribution extends Construct {
         originConfigs: [
           {
             s3OriginSource: {
-              s3BucketSource: sourceBucket
+              s3BucketSource: assetsBucket
             },
             behaviors: [
               {
@@ -41,7 +48,7 @@ export default class CloudFrontNextjsDistribution extends Construct {
           },
           {
             s3OriginSource: {
-              s3BucketSource: sourceBucket
+              s3BucketSource: assetsBucket
             },
             behaviors: [{ pathPattern: "_next/*" }]
           }
