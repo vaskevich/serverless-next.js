@@ -18,4 +18,15 @@ describe("Given I want to provision a serverless next app with zero config", () 
 
     expect(stack).toHaveResource("AWS::S3::Bucket");
   });
+
+  it("creates a cache behaviour to forward _next/* requests to the assets bucket", () => {
+    const stack = new Stack();
+    const dist = new NextDistribution(stack, "TestDistribution");
+
+    expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+      DistributionConfig: {
+        CacheBehaviors: [{ PathPattern: "_next/*" }]
+      }
+    });
+  });
 });

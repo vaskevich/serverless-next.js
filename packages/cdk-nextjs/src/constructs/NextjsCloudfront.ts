@@ -5,7 +5,7 @@ import { Bucket } from "@aws-cdk/aws-s3";
 export default class CloudFrontNextjsDistribution extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
-    const sourceBucket = new Bucket(scope, "PlaceholderBucket");
+    const sourceBucket = new Bucket(scope, `${id}-static-assets-bucket`);
 
     const cfDistribution = new CloudFrontWebDistribution(
       scope,
@@ -17,6 +17,12 @@ export default class CloudFrontNextjsDistribution extends Construct {
               s3BucketSource: sourceBucket
             },
             behaviors: [{ isDefaultBehavior: true }]
+          },
+          {
+            s3OriginSource: {
+              s3BucketSource: sourceBucket
+            },
+            behaviors: [{ pathPattern: "_next/*" }]
           }
         ]
       }
