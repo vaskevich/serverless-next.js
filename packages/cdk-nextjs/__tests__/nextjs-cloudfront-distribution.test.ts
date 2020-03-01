@@ -1,28 +1,61 @@
+import path from "path";
 import { Stack } from "@aws-cdk/core";
 import NextDistribution from "../src/constructs/NextjsCloudfront";
-import { SynthUtils } from "@aws-cdk/assert";
 
 import "@aws-cdk/assert/jest";
 
 describe("Given I want to provision a serverless next app with zero config", () => {
-  it("creates new cloudfront distribution", () => {
-    const stack = new Stack();
-    const dist = new NextDistribution(stack, "TestDistribution");
+  let tmpDir: string;
+  let stack: Stack;
 
+  beforeEach(() => {
+    tmpDir = process.cwd();
+    process.chdir(path.join(__dirname, "./fixtures/zero-config-app"));
+    stack = new Stack();
+    const distribution = new NextDistribution(stack, "testdistribution");
+  });
+
+  afterEach(() => {
+    process.chdir(tmpDir);
+  });
+
+  it("creates new cloudfront distribution", () => {
     expect(stack).toHaveResource("AWS::CloudFront::Distribution");
   });
 
   it("creates an S3 bucket for static assets", () => {
-    const stack = new Stack();
-    const dist = new NextDistribution(stack, "TestDistribution");
-
     expect(stack).toHaveResource("AWS::S3::Bucket");
   });
 
-  it("creates a cache behaviour to forward _next/* requests to the assets bucket", () => {
-    const stack = new Stack();
-    const dist = new NextDistribution(stack, "TestDistribution");
+  it("attaches an edge function to the default cache behaviour", () => {
+    expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+      DistributionConfig: {
+        DefaultCacheBehavior: {
+          LambdaFunctionAssociations: [
+            {
+              EventType: "origin-request",
+              LambdaFunctionARN: {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testdistributioncoreedgefnDE686A76",
+                        "Arn"
+                      ]
+                    },
+                    ":$LATEST"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      }
+    });
+  });
 
+  it("creates a cache behaviour to forward _next/* requests to the assets bucket", () => {
     expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
       DistributionConfig: {
         CacheBehaviors: [{ PathPattern: "_next/*" }]
