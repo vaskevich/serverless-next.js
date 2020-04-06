@@ -3,8 +3,14 @@
   "version": "1.0.0",
   "description": "Build package for serverless next apps",
   "main": "dist/index.js",
-  "dependencies": {},
-  "devDependencies": {},
+  "dependencies": {
+    "execa": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.9.0",
+    "@types/jest": "^25.2.1",
+    "typescript": "^3.8.3"
+  },
   "scripts": {
     "test": "jest"
   },

@@ -1,7 +1,7 @@
 import path from "path";
 import fse from "fs-extra";
 import execa from "execa";
-import build from "../index.ts";
+import build from "../src/index";
 
 jest.mock("execa");
 
