@@ -1,0 +1,9 @@
+name: serverless-nextjs-lambda-binary-fix # Required. The name of the Component
+version: 2.30.5 # Required. The version of the Component
+author: vaskevich # Required. The author of the Component
+org: vaskevich # Required. The Serverless Framework org which owns this Component
+main: ./packages/serverless-component # Required. The directory which contains the Component code
+description: Patched version of serverless-next.js-fixed # Optional. The description of the Component
+keywords: aws, serverless, express # Optional. The keywords of the Component to make it easier to find at registry.serverless.com
+repo: https://github.com/vaskevich/serverless-next.js # Optional. The code repository of the Component
+license: MIT # Optional. The license of the Component code

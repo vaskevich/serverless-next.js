@@ -1,11 +1,11 @@
 {
-  "name": "serverless-next.js",
+  "name": "serverless-nextjs-lambda-binary-fix",
   "version": "1.11.1",
   "description": "Serverless nextjs powered by Serverless Components",
   "main": "serverless.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/danielcondemarin/serverless-next.js.git",
+    "url": "git+https://github.com/vaskevich/serverless-next.js.git",
     "directory": "packages/serverless-component"
   },
   "keywords": [
@@ -31,6 +31,7 @@
     "@sls-next/lambda-at-edge": "file:../lambda-at-edge",
     "@sls-next/s3-static-assets": "file:../s3-static-assets",
     "fs-extra": "^8.1.0",
-    "next-aws-cloudfront": "file:../lambda-at-edge-compat"
+    "next-aws-cloudfront": "file:../lambda-at-edge-compat",
+    "patch-package": "^6.2.2"
   }
 }
