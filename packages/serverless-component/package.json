@@ -1,6 +1,6 @@
 {
   "name": "serverless-nextjs-lambda-binary-fix",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "description": "Serverless nextjs powered by Serverless Components",
   "main": "serverless.js",
   "repository": {
@@ -33,5 +33,8 @@
     "fs-extra": "^8.1.0",
     "next-aws-cloudfront": "file:../lambda-at-edge-compat",
     "patch-package": "^6.2.2"
+  },
+  "scripts": {
+    "postinstall": "patch-package"
   }
 }
